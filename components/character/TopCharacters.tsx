@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { getTopCharacters } from "@/api/characters";
 import { ThemedView } from "../ThemedView";
 import { Ionicons } from "@expo/vector-icons";
+import { Href, Link } from "expo-router";
 
 interface Props {
   character: Character;
@@ -45,36 +46,41 @@ function TopCharacters() {
 function CharacterCard({ character }: Props) {
   const [scaleForImage, setScaleForImage] = useState(1);
   return (
-    <Pressable
-      onPressIn={() => setScaleForImage(1.02)}
-      onPressOut={() => setScaleForImage(1)}
-      className="m-3"
-    >
-      <View className="overflow-hidden  relative justify-center">
-        <Animated.Image
-          source={{
-            uri: character.images.webp.image_url,
-          }}
-          style={[styles.cardImage, { transform: [{ scale: scaleForImage }] }]}
-        />
+    <Link asChild href={`/character/${character.mal_id}` as Href}>
+      <Pressable
+        onPressIn={() => setScaleForImage(1.02)}
+        onPressOut={() => setScaleForImage(1)}
+        className="m-3"
+      >
+        <View className="overflow-hidden  relative justify-center">
+          <Animated.Image
+            source={{
+              uri: character.images.webp.image_url,
+            }}
+            style={[
+              styles.cardImage,
+              { transform: [{ scale: scaleForImage }] },
+            ]}
+          />
 
-        {/* RANK */}
-        {character.nicknames.length ? (
-          <ThemedText className="p-2 rounded-sm text-xs bg-white/80 font-bold  w-min text-black absolute top-0 right-0">
-            {character.nicknames[0]}
-          </ThemedText>
-        ) : (
-          <ThemedText className="p-2 rounded-sm text-xs bg-white/80 font-bold  w-min text-black absolute top-0 right-0">
-            {character.name_kanji}
-          </ThemedText>
-        )}
+          {/* RANK */}
+          {character.nicknames.length ? (
+            <ThemedText className="p-2 rounded-sm text-xs bg-white/80 font-bold  w-min text-black absolute top-0 right-0">
+              {character.nicknames[0]}
+            </ThemedText>
+          ) : (
+            <ThemedText className="p-2 rounded-sm text-xs bg-white/80 font-bold  w-min text-black absolute top-0 right-0">
+              {character.name_kanji}
+            </ThemedText>
+          )}
 
-        {/* TITLE */}
-        <ThemedText className="p-2 rounded-sm text-sm bg-dark/80 font-bold backdrop-blur-3xl w-full text-center absolute bottom-0">
-          {character.name}
-        </ThemedText>
-      </View>
-    </Pressable>
+          {/* TITLE */}
+          <ThemedText className="p-2 rounded-sm text-sm bg-dark/80 font-bold backdrop-blur-3xl w-full text-center absolute bottom-0">
+            {character.name}
+          </ThemedText>
+        </View>
+      </Pressable>
+    </Link>
   );
 }
 

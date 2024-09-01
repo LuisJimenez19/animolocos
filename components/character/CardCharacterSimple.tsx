@@ -1,4 +1,4 @@
-import { AnimeData } from "@/types";
+import { AnimeData, Character } from "@/types";
 import { styled } from "nativewind";
 import { useRef, useState } from "react";
 import { Animated, Pressable, StyleSheet, View } from "react-native";
@@ -7,12 +7,12 @@ import { ThemedText } from "../ThemedText";
 import { Href, Link } from "expo-router";
 
 interface Props {
-  anime: AnimeData;
+  character: Character;
 }
 
 const ViewStyled = styled(Pressable);
 
-function CardAnimeSimple({ anime }: Props) {
+function CardCharacterSimple({ character }: Props) {
   const scale = useRef(new Animated.Value(1)).current;
 
   const [scaleForImage, setScaleForImage] = useState(1);
@@ -22,7 +22,7 @@ function CardAnimeSimple({ anime }: Props) {
   };
 
   return (
-    <Link asChild href={`/anime/${anime.mal_id}` as Href}>
+    <Link asChild href={`/character/${character.mal_id}` as Href}>
       <ViewStyled
         onPressIn={() => setScaleForImage(1.1)}
         onPressOut={() => setScaleForImage(1)}
@@ -31,7 +31,7 @@ function CardAnimeSimple({ anime }: Props) {
         <View className="overflow-hidden">
           <Animated.Image
             source={{
-              uri: anime.images.webp.large_image_url,
+              uri: character.images.webp.image_url,
             }}
             style={[
               styles.cardImage,
@@ -40,8 +40,9 @@ function CardAnimeSimple({ anime }: Props) {
             ]}
           />
         </View>
+        <ThemedText></ThemedText>
         <ThemedText className="text-xs text-center text-ellipsis">
-          {anime.title.slice(0, 15)}
+          {character.name.slice(0, 15)}
         </ThemedText>
       </ViewStyled>
     </Link>
@@ -59,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardAnimeSimple;
+export default CardCharacterSimple;
